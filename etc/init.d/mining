@@ -1,0 +1,59 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:          startmining
+# Required-Start:    $syslog $network $netdaemons $ondemand $rc.local
+# Required-Stop:     
+# Should-Start:      
+# Should-Stop:       
+# X-Start-Before:    nis
+# X-Stop-After:      nis
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# X-Interactive:     false
+# Short-Description: mine initscript
+# chkconfig:         345 99 10
+# Description:       This file should be used to construct scripts to be
+#                    placed in /etc/init.d.
+### END INIT INFO
+echo "command: $1"
+case "$1" in
+ 'start')
+  #su - mcollavo -c /home/mcollavo/mine-pool-ethermine.org.sh &
+  #screen -dmS mining /home/mcollavo/mine-pool-ethermine.org.sh claymore
+  #/home/mcollavo/mine-pool.sh claymore-nanopool-dcr &
+  /home/mcollavo/mine-pool.sh `cat /home/mcollavo/mining-what.txt` &
+  #/home/mcollavo/mine-pool.sh vertcoin &
+  ;;
+ 'stop')
+  service mining reload
+  screen -S mining -p 0 -X stuff "012"
+  sleep 1
+  screen -S mining -p 0 -X stuff "q"
+  sleep 1
+  killall ethminer
+  killall ethdcrminer64
+  killall sgminer
+  killall screen
+  killall mine-pool.sh
+  /home/mcollavo/git/amdcovc/amdcovc coreod:0,1,2=0 memod:0,1,2=0
+  ;;
+ 'reload')
+  sudo systemctl daemon-reload
+  ;;
+ 'restart')
+  service mining stop
+  sleep 1
+  service mining start
+  ;;
+ 'reboot')
+  shutdown -r
+  sleep 50
+  service mining stop
+  ;;
+ 'shutdown')
+  shutdown
+  sleep 50
+  service mining stop
+  ;;
+esac
+exit 0

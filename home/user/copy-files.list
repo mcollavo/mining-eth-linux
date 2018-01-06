@@ -1,0 +1,15 @@
+copy-files-to-mining-eth-linux.sh	home/user
+copy-files.list		home/user
+
+mine-pool.sh		home/user
+mining-what.txt		home/user
+install-miner.sh	home/user
+
+mining-pause.sh		home/user
+reboot-force.sh		home/user
+
+git-checkout-all.sh	home/user
+git-url-all.sh		home/user
+
+/etc/init.d/mining	etc/init.d
+
